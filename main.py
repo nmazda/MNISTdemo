@@ -2,6 +2,7 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 #from tensorflow.python.compiler.mlcompute import mlcompute
 #tf.compat.v1.disable_eager_execution()
@@ -30,6 +31,21 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5)
+# Fit the model
+history = model.fit(x_train, y_train, epochs=5, validation_data=(x_test, y_test))
+
+# Show all data in history
+print(history.history.keys())
+# summarize history for accuracy
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model accuracy')
+plt.ylabel('arrucary')
+plt.xlabel('epoch')
+plt.legend(['train_accuracy', 'test_accuracy', 'training_loss', 'test_loss'], loc='upper left')
+plt.show()
+
 loss, acc = model.evaluate(x_test, y_test)
 print("Accuracy: {:5.2}%".format(100*acc))
